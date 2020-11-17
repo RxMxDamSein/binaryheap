@@ -64,8 +64,8 @@ class BinHeap <P extends Comparable<? super P>, D> {
 			lowestPrio=p;
 		}else{
 			Node z=wurzel.sibling;
-			if(z==wurzel)
-				wurzel.sibling=null;
+			if(z==null)
+				z=wurzel;
 			n.sibling=z;
 			wurzel=n;
 			if(p.compareTo(lowestPrio)<0)
