@@ -74,9 +74,24 @@ class BinHeap <P extends Comparable<? super P>, D> {
 		return e;
 	}
 	/**
-	 * Todo
+	 * Todo dump (Ausgabe)
 	 */
 	public void dump() {
+		//(P) nodes.get(i).prio();
+
+		if(wurzel == null) {
+			return;
+		}
+		Node x = wurzel;
+		while (x != null) {
+			System.out.println(x.prio());
+			x = wurzel.sibling;
+		}
+
+
+
+
+
 	}
 
 
