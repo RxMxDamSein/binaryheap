@@ -1,3 +1,5 @@
+import javafx.util.Pair;
+
 import java.util.Vector;
 
 // Als Binomial-Halde implementierte Minimum-Vorrangwarteschlange
@@ -8,18 +10,19 @@ class BinHeap <P extends Comparable<? super P>, D> {
 	Vector<Node> nodes;
 	P lowestPrio;
 	Node wurzel;
+	Integer anzNodes;
 
 	/**
 	 * ToDo
 	 */
 	public BinHeap(){
-		nodes=new Vector<>();
+		nodes=new Vector<Node>();
 		wurzel=null;
 	}
 
 	// Ist die Halde momentan leer?
 	boolean isEmpty (){
-		return nodes.isEmpty();
+		return wurzel==null;
 	}
 
 	/**
@@ -54,13 +57,20 @@ class BinHeap <P extends Comparable<? super P>, D> {
 	 */
 	Entry<P, D> insert(P p, D d) {
 		Entry e=new Entry(p,d);
-		Node n = new Node(e);
+		Node n = new Node(e,nodes.size());
+		nodes.add(n);
 		if (isEmpty()){
-			nodes.add(n);
 			wurzel=n;
-			wurzel.sibling=wurzel;
+			lowestPrio=p;
+		}else{
+			Node z=wurzel.sibling;
+			if(z==wurzel)
+				wurzel.sibling=null;
+			n.sibling=z;
+			wurzel=n;
+			if(p.compareTo(lowestPrio)<0)
+				lowestPrio=p;
 		}
-
 		return e;
 	}
 	/**
@@ -151,6 +161,9 @@ class BinHeap <P extends Comparable<? super P>, D> {
     // sibling), enthält der Knoten einen Verweis auf den zugehörigen
     // Eintrag.
     private static class Node <P, D> {
+
+	//Zugehöriger Index in nodes
+	private Integer idx;
 	// Zugehöriger Eintrag.
 	private Entry<P, D> entry;
 
@@ -171,9 +184,10 @@ class BinHeap <P extends Comparable<? super P>, D> {
 
 	// Knoten erzeugen, der auf den Eintrag e verweist
 	// und umgekehrt.
-	private Node (Entry<P, D> e) {
+	private Node (Entry<P, D> e,Integer idx) {
 	    entry = e;
 	    e.node = this;
+	    this.idx=idx;
 	}
 
 	// Priorität des Knotens, d. h. des zugehörigen Eintrags
