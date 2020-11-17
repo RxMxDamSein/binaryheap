@@ -3,7 +3,66 @@
 // Comparable<P> oder Comparable<P'> für einen Obertyp P' von P
 // implementieren muss) und zusätzlichen Daten eines beliebigen Typs D.
 class BinHeap <P extends Comparable<? super P>, D> {
-    // Eintrag einer solchen Warteschlange bzw. Halde, bestehend aus
+	/**
+	 * Todo
+	 */
+	public void dump() {
+	}
+
+	/**
+	 * Todo
+	 * @return
+	 */
+	public int size() {
+		return 0;
+	}
+
+	/**
+	 * Todo
+	 * @param s
+	 * @param n
+	 * @return
+	 */
+	public Entry<P, D> insert(P s, D n) {
+		return null;
+	}
+
+	/**
+	 * ToDo
+	 * @param entry
+	 * @return
+	 */
+	public boolean remove(Entry<P, D> entry) {
+		return false;
+	}
+
+	/**
+	 * ToDo
+	 * @return
+	 */
+	public Entry<P, D> minimum() {
+		return null;
+	}
+
+	/**
+	 * ToDo
+	 * @return
+	 */
+	public Entry<P, D> extractMin() {
+		return null;
+	}
+
+	/**
+	 * ToDo
+	 * @param entry
+	 * @param s
+	 * @return
+	 */
+	public boolean changePrio(Entry<P, D> entry, P s) {
+		return false;
+	}
+
+	// Eintrag einer solchen Warteschlange bzw. Halde, bestehend aus
     // einer Priorität prio mit Typ P und zusätzlichen Daten data mit
     // Typ D.
     // Wenn der Eintrag momentan tatsächlich zu einer Halde gehört,
