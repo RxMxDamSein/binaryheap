@@ -1,14 +1,17 @@
+import java.util.Vector;
+
 // Als Binomial-Halde implementierte Minimum-Vorrangwarteschlange
 // mit Prioritäten eines beliebigen Typs P (der die Schnittstelle
 // Comparable<P> oder Comparable<P'> für einen Obertyp P' von P
 // implementieren muss) und zusätzlichen Daten eines beliebigen Typs D.
 class BinHeap <P extends Comparable<? super P>, D> {
+	Vector<Entry> entries;
 
 	/**
 	 * ToDo
 	 */
 	public BinHeap(){
-		
+		entries=new Vector<Entry>();
 	}
 	/**
 	 * Todo
