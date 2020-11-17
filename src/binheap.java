@@ -18,6 +18,11 @@ class BinHeap <P extends Comparable<? super P>, D> {
 	boolean isEmpty (){
 		return nodes.isEmpty();
 	}
+
+	boolean isEmpty(){
+		return false;
+	}
+
 	/**
 	 * Todo
 	 */
