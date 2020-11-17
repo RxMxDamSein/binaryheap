@@ -6,12 +6,15 @@ import java.util.Vector;
 // implementieren muss) und zusätzlichen Daten eines beliebigen Typs D.
 class BinHeap <P extends Comparable<? super P>, D> {
 	Vector<Node> nodes;
+	P lowestPrio;
+	Node wurzel;
 
 	/**
 	 * ToDo
 	 */
 	public BinHeap(){
 		nodes=new Vector<>();
+		wurzel=null;
 	}
 
 	// Ist die Halde momentan leer?
@@ -24,7 +27,7 @@ class BinHeap <P extends Comparable<? super P>, D> {
 	 * Größe der Halde, d. h. Anzahl momentan gespeicherter Einträge liefern.
 	 * @return
 	 */
-	public int size() {
+	int size() {
 		return nodes.size();
 	}
 
@@ -46,21 +49,29 @@ class BinHeap <P extends Comparable<? super P>, D> {
 
 	/**
 	 * Todo
+	 * // Neuen Eintrag mit Priorität p und zusätzlichen Daten d erzeugen,// zur Halde hinzufügen und zurückliefern.
+	 * @return
+	 */
+	Entry<P, D> insert(P p, D d) {
+		Entry e=new Entry(p,d);
+		Node n = new Node(e);
+		if (isEmpty()){
+			nodes.add(n);
+			wurzel=n;
+			wurzel.sibling=wurzel;
+		}
+
+		return e;
+	}
+	/**
+	 * Todo
 	 */
 	public void dump() {
 	}
 
 
 
-	/**
-	 * Todo
-	 * @param s
-	 * @param n
-	 * @return
-	 */
-	public Entry<P, D> insert(P s, D n) {
-		return null;
-	}
+
 
 	/**
 	 * ToDo
@@ -200,7 +211,7 @@ class BinHeapTest {
 	    String line = r.readLine();
 	    if (line == null || line.equals("")) return;
 	    if (System.console() == null) System.out.println(line);
-	    String [] cmd = line.split(" ");
+	    String [] cmd = line.split(" "); //+ sakdlas
 
 	    // Fallunterscheidung anhand des ersten Worts.
 	    switch (cmd[0]) {
