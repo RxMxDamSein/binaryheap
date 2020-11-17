@@ -19,10 +19,6 @@ class BinHeap <P extends Comparable<? super P>, D> {
 		return nodes.isEmpty();
 	}
 
-	boolean isEmpty(){
-		return false;
-	}
-
 	/**
 	 * Todo
 	 */
