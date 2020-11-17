@@ -63,10 +63,7 @@ class BinHeap <P extends Comparable<? super P>, D> {
 			wurzel=n;
 			lowestPrio=p;
 		}else{
-			Node z=wurzel.sibling;
-			if(z==null)
-				z=wurzel;
-			n.sibling=z;
+			n.sibling=wurzel;
 			wurzel=n;
 			if(p.compareTo(lowestPrio)<0)
 				lowestPrio=p;
@@ -85,7 +82,7 @@ class BinHeap <P extends Comparable<? super P>, D> {
 		Node x = wurzel;
 		while (x != null) {
 			System.out.println(x.prio());
-			x = wurzel.sibling;
+			x = x.sibling;
 		}
 
 
