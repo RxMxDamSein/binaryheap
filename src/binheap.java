@@ -18,19 +18,39 @@ class BinHeap <P extends Comparable<? super P>, D> {
 	boolean isEmpty (){
 		return nodes.isEmpty();
 	}
+
+	/**
+	 * Todo
+	 * Größe der Halde, d. h. Anzahl momentan gespeicherter Einträge liefern.
+	 * @return
+	 */
+	public int size() {
+		return nodes.size();
+	}
+
+
+	/** ToDo
+	 * Enthält die Halde den Eintrag e?
+	 */
+	boolean contains (Entry<P, D> e){
+		if(e.prio==null)
+			return false;
+		for(int i=0;i<size();i++){
+			if(e.prio.compareTo((P) nodes.get(i).prio())==0){
+				if(e.data.equals(nodes.get(i).entry.data))	//diese Zeile vielleicht nicht notwendig! NACHFRAGEN! ToDo
+					return true;
+			}
+		}
+		return false;
+	}
+
 	/**
 	 * Todo
 	 */
 	public void dump() {
 	}
 
-	/**
-	 * Todo
-	 * @return
-	 */
-	public int size() {
-		return 0;
-	}
+
 
 	/**
 	 * Todo
