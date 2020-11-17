@@ -5,13 +5,18 @@ import java.util.Vector;
 // Comparable<P> oder Comparable<P'> für einen Obertyp P' von P
 // implementieren muss) und zusätzlichen Daten eines beliebigen Typs D.
 class BinHeap <P extends Comparable<? super P>, D> {
-	Vector<Entry> entries;
+	Vector<Node> nodes;
 
 	/**
 	 * ToDo
 	 */
 	public BinHeap(){
-		entries=new Vector<Entry>();
+		nodes=new Vector<>();
+	}
+
+	// Ist die Halde momentan leer?
+	boolean isEmpty (){
+		return nodes.isEmpty();
 	}
 	/**
 	 * Todo
