@@ -58,6 +58,7 @@ class BinHeap <P extends Comparable<? super P>, D> {
 	Entry<P, D> insert(P p, D d) {
 		Entry e=new Entry(p,d);
 		Node n = new Node(e,nodes.size());
+		n.degree=0;
 		nodes.add(n);
 		if (isEmpty()){
 			wurzel=n;
@@ -67,13 +68,59 @@ class BinHeap <P extends Comparable<? super P>, D> {
 			wurzel=n;
 			if(p.compareTo(lowestPrio)<0)
 				lowestPrio=p;
+			checkSameDegree();
 		}
 		return e;
+	}
+
+	private void checkSameDegree(){
+		Node start=wurzel;
+		while(start.sibling!=null){
+			if(start.degree==start.sibling.degree){
+				mergeSameDegree(start,start.sibling);
+				return;
+			}
+			start=start.sibling;
+		}
+	}
+
+	private void mergeSameDegree(Node n1,Node n2){
+		Node higher,lower;
+		if(((P)n1.prio()).compareTo((P)n2.prio())>0){
+			higher=n1;
+			lower=n2;
+		}else{
+			higher=n2;
+			lower=n1;
+		}
+		Node bFh=wurzel;	//before higher
+		if(wurzel!=higher) {
+			while (bFh.sibling != higher) {
+				bFh = bFh.sibling;
+			}
+			bFh.sibling = higher.sibling;
+		}else {
+			wurzel=higher.sibling;
+		}
+		lower.child=higher;
+		higher.parent=lower;
+		if(lower.child!=null){
+			Node oldChild=lower.child;
+			higher.sibling=oldChild;
+			Node lSfC=oldChild;//last sibling from child to make sibling loop
+			while (lSfC.sibling!=oldChild){
+				lSfC=lSfC.sibling;
+			}
+			lSfC.sibling=higher;
+		}else {
+			higher.sibling=higher;
+		}
+
 	}
 	/**
 	 * Todo dump (Ausgabe)
 	 */
-	public void dump() {
+	void dump() {
 		//(P) nodes.get(i).prio();
 
 		if(wurzel == null) {
