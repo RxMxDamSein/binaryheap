@@ -61,7 +61,6 @@ class BinHeap <P extends Comparable<? super P>, D> {
 		nodes.add(n);
 		if (isEmpty()){
 			wurzel=n;
-			wurzel.sibling=wurzel;
 			lowestPrio=p;
 		}else{
 			Node z=wurzel.sibling;
