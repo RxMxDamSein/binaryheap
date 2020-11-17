@@ -22,7 +22,7 @@ class BinHeap <P extends Comparable<? super P>, D> {
 
 	// Ist die Halde momentan leer?
 	boolean isEmpty (){
-		return nodes.isEmpty();
+		return wurzel==null;
 	}
 
 	/**
