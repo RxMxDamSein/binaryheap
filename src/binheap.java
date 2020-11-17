@@ -3,6 +3,13 @@
 // Comparable<P> oder Comparable<P'> für einen Obertyp P' von P
 // implementieren muss) und zusätzlichen Daten eines beliebigen Typs D.
 class BinHeap <P extends Comparable<? super P>, D> {
+
+	/**
+	 * ToDo
+	 */
+	public BinHeap(){
+		
+	}
 	/**
 	 * Todo
 	 */
