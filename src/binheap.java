@@ -105,18 +105,17 @@ class BinHeap <P extends Comparable<? super P>, D> {
 		}
 
 		if(lower.child!=null){
-			Node oldChild=lower.child;
-			higher.sibling=oldChild;
-			Node lSfC=oldChild;//last sibling from child to make sibling loop
-			while (lSfC.sibling!=oldChild){
-				lSfC=lSfC.sibling;
+			Node currNote=lower.child;
+			while(currNote.sibling!=lower.child){
+				currNote=currNote.sibling;
 			}
-			System.out.println(lSfC.prio()+" new sibling "+higher.prio());
-			lSfC.sibling=higher;
+			currNote.sibling=higher;
+			higher.sibling=lower.child;
 		}else {
+			lower.child=higher;
 			higher.sibling=higher;
 		}
-		lower.child=higher;
+
 		higher.parent=lower;
 		lower.degree=lower.degree+1;
 	}
@@ -131,7 +130,7 @@ class BinHeap <P extends Comparable<? super P>, D> {
 		}
 		Node x = wurzel;
 		while (x != null) {
-			System.out.println(x.prio());
+			System.out.println(x.prio()+" "+x.entry.data);
 			Node y=x.child;
 			if(y!=null){
 				printChild(y,1);
@@ -146,7 +145,7 @@ class BinHeap <P extends Comparable<? super P>, D> {
 			sleer+=" ";
 		Node cz=c;
 		do{
-			System.out.println(sleer+cz.prio());
+			System.out.println(sleer+cz.prio()+" "+cz.entry.data);
 			if(cz.child!=null){
 				printChild(cz.child,leer+1);
 			}
@@ -234,6 +233,7 @@ class BinHeap <P extends Comparable<? super P>, D> {
 	private Node<P, D> parent;
 
 	// Nachfolger mit dem größten Grad
+		// JEtzt anscheinend mit kleinstem GRAD WTF
 	// (falls vorhanden; bei einem Blattknoten null).
 	private Node<P, D> child;
 
