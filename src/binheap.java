@@ -68,9 +68,7 @@ class BinHeap <P extends Comparable<? super P>, D> {
 			wurzel=n;
 			if(p.compareTo(lowestPrio)<0)
 				lowestPrio=p;
-			while(checkSameDegree()){
-
-			}
+			while(checkSameDegree());
 		}
 		return e;
 	}
@@ -105,8 +103,7 @@ class BinHeap <P extends Comparable<? super P>, D> {
 		}else {
 			wurzel=higher.sibling;
 		}
-		lower.child=higher;
-		higher.parent=lower;
+
 		if(lower.child!=null){
 			Node oldChild=lower.child;
 			higher.sibling=oldChild;
@@ -114,10 +111,13 @@ class BinHeap <P extends Comparable<? super P>, D> {
 			while (lSfC.sibling!=oldChild){
 				lSfC=lSfC.sibling;
 			}
+			System.out.println(lSfC.prio()+" new sibling "+higher.prio());
 			lSfC.sibling=higher;
 		}else {
 			higher.sibling=higher;
 		}
+		lower.child=higher;
+		higher.parent=lower;
 		lower.degree=lower.degree+1;
 	}
 	/**
