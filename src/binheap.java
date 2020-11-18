@@ -68,20 +68,23 @@ class BinHeap <P extends Comparable<? super P>, D> {
 			wurzel=n;
 			if(p.compareTo(lowestPrio)<0)
 				lowestPrio=p;
-			checkSameDegree();
+			while(checkSameDegree()){
+
+			}
 		}
 		return e;
 	}
 
-	private void checkSameDegree(){
+	private boolean checkSameDegree(){
 		Node start=wurzel;
 		while(start.sibling!=null){
 			if(start.degree==start.sibling.degree){
 				mergeSameDegree(start,start.sibling);
-				return;
+				return true;
 			}
 			start=start.sibling;
 		}
+		return false;
 	}
 
 	private void mergeSameDegree(Node n1,Node n2){
@@ -115,7 +118,7 @@ class BinHeap <P extends Comparable<? super P>, D> {
 		}else {
 			higher.sibling=higher;
 		}
-
+		lower.degree=lower.degree+1;
 	}
 	/**
 	 * Todo dump (Ausgabe)
@@ -129,13 +132,26 @@ class BinHeap <P extends Comparable<? super P>, D> {
 		Node x = wurzel;
 		while (x != null) {
 			System.out.println(x.prio());
+			Node y=x.child;
+			if(y!=null){
+				printChild(y,1);
+			}
 			x = x.sibling;
 		}
+	}
 
-
-
-
-
+	private void printChild(Node c,int leer){
+		String sleer="";
+		for (int i=0;i<leer;i++)
+			sleer+=" ";
+		Node cz=c;
+		do{
+			System.out.println(sleer+cz.prio());
+			if(cz.child!=null){
+				printChild(cz.child,leer+1);
+			}
+			cz=cz.sibling;
+		}while (cz!=c);
 	}
 
 
