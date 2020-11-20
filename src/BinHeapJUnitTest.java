@@ -29,16 +29,20 @@ class BinHeapJUnitTest {
     @Test
     public void testContainsBspdumb(){
         BinHeap<String, Integer> heap = new BinHeap<String, Integer>();
-        BinHeap.Entry<String, Integer> [] entrys=new BinHeap.Entry [11];
-        for(int i=0;i<11;i++){
+        BinHeap.Entry<String, Integer> [] entrys=new BinHeap.Entry [1000];
+        for(int i=0;i<1000;i++){
             char z=97;
             z+=i;
             entrys[i] = heap.insert(""+z, i);
         }
-        for(int i=0;i<11;i++){
-            assertTrue(heap.contains(entrys[i]),"Objekt "+entrys[i].prio()+","+entrys[i].data()+" sollte enthalten sein! daher TRUE nicht FALSE!");
+        for(int j=0;j<20;j++){
+            for(int i=0;i<1000;i++){
+                boolean b=heap.contains(entrys[i]);
+                assertTrue(b,"Objekt "+entrys[i].prio()+","+entrys[i].data()+" sollte enthalten sein! daher TRUE nicht FALSE!");
+            }
         }
     }
+
 
     @Test
     public void testContains1(){

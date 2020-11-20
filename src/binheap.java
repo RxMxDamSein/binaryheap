@@ -58,29 +58,33 @@ class BinHeap <P extends Comparable<? super P>, D> {
 		while (w!=null && w.degree<degree){
 			w=w.sibling;
 		}
-		while (w!=null && !containsInSubTree(n,w)){
+		do{
+			if((w.degree==n.degree && ((P)w.prio()).compareTo((P)(n.prio()))==0 && w.entry.data().equals(n.entry.data())|| (w.degree>n.degree) &&containsInSubTree(n,w.child)))
+				return true;
 			w=w.sibling;
-		}
-		if(w==null)
-			return false;
-		else {
-			return true;
-		}
+		} while (w!=null);
+		return false;
 	}
 
 	//ToDo
 	private boolean containsInSubTree(Node n,Node w){
-		if(w.prio().equals(n.prio()) && w.entry.data().equals(n.entry.data()))
-			return true;
-		if(w.child==null)
+		if(w==null)
 			return false;
-		Node c=w.child;
-		while(c.degree<n.degree && c.sibling!=w.child){
+		Node c=w;
+		while(c.degree<n.degree && c.sibling!=w){
 			c=c.sibling;
 		}
 		if(c.degree<n.degree)
 			return false;
-		return containsInSubTree(n,c);
+		do{
+			if(c.degree==n.degree && ((P)c.prio()).compareTo((P)(n.prio()))==0 && c.entry.data().equals(n.entry.data()))
+				return true;
+			if(c.child!=null)
+				if (containsInSubTree(n,c.child))
+					return true;
+			c=c.sibling;
+		} while(c!=w.child && c.degree>n.degree);
+		return false;
 	}
 
 	/**
