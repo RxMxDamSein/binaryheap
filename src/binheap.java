@@ -7,7 +7,7 @@ import java.util.Vector;
 // Comparable<P> oder Comparable<P'> für einen Obertyp P' von P
 // implementieren muss) und zusätzlichen Daten eines beliebigen Typs D.
 class BinHeap <P extends Comparable<? super P>, D> {
-	Vector<Node> nodes;
+	//Vector<Node> nodes;
 	P lowestPrio;
 	Node wurzel;
 	Integer anzNodes;
@@ -16,7 +16,7 @@ class BinHeap <P extends Comparable<? super P>, D> {
 	 * ToDo
 	 */
 	public BinHeap(){
-		nodes=new Vector<Node>();
+		//nodes=new Vector<Node>();
 		wurzel=null;
 	}
 
@@ -31,7 +31,16 @@ class BinHeap <P extends Comparable<? super P>, D> {
 	 * @return
 	 */
 	int size() {
-		return nodes.size();
+		//return nodes.size();
+		int size=0;
+		if(wurzel==null)
+			return 0;
+		Node n=wurzel;
+		while (n!=null){
+			size+=Math.pow(2,n.degree);
+			n=n.sibling;
+		}
+		return size;
 	}
 
 
@@ -39,15 +48,39 @@ class BinHeap <P extends Comparable<? super P>, D> {
 	 * Enthält die Halde den Eintrag e?
 	 */
 	boolean contains (Entry<P, D> e){
-		if(e.prio==null)
+		if(e==null ||e.prio==null || wurzel==null)
 			return false;
-		for(int i=0;i<size();i++){
-			if(e.prio.compareTo((P) nodes.get(i).prio())==0){
-				if(e.data.equals(nodes.get(i).entry.data))	//diese Zeile vielleicht nicht notwendig! NACHFRAGEN! ToDo
-					return true;
-			}
+		Node n=e.node;
+		int degree=n.degree;
+		if(degree<0)
+			return false;
+		Node w=wurzel;
+		while (w!=null && w.degree<degree){
+			w=w.sibling;
 		}
-		return false;
+		while (w!=null && !containsInSubTree(n,w)){
+			w=w.sibling;
+		}
+		if(w==null)
+			return false;
+		else {
+			return true;
+		}
+	}
+
+	//ToDo
+	private boolean containsInSubTree(Node n,Node w){
+		if(w.prio().equals(n.prio()) && w.entry.data().equals(n.entry.data()))
+			return true;
+		if(w.child==null)
+			return false;
+		Node c=w.child;
+		while(c.degree<n.degree && c.sibling!=w.child){
+			c=c.sibling;
+		}
+		if(c.degree<n.degree)
+			return false;
+		return containsInSubTree(n,c);
 	}
 
 	/**
@@ -57,9 +90,9 @@ class BinHeap <P extends Comparable<? super P>, D> {
 	 */
 	Entry<P, D> insert(P p, D d) {
 		Entry e=new Entry(p,d);
-		Node n = new Node(e,nodes.size());
+		Node n = new Node(e);
 		n.degree=0;
-		nodes.add(n);
+		//nodes.add(n);
 		if (isEmpty()){
 			wurzel=n;
 			lowestPrio=p;
@@ -221,8 +254,6 @@ class BinHeap <P extends Comparable<? super P>, D> {
     // Eintrag.
     private static class Node <P, D> {
 
-	//Zugehöriger Index in nodes
-	private Integer idx;
 	// Zugehöriger Eintrag.
 	private Entry<P, D> entry;
 
@@ -244,10 +275,9 @@ class BinHeap <P extends Comparable<? super P>, D> {
 
 	// Knoten erzeugen, der auf den Eintrag e verweist
 	// und umgekehrt.
-	private Node (Entry<P, D> e,Integer idx) {
+	private Node (Entry<P, D> e) {
 	    entry = e;
 	    e.node = this;
-	    this.idx=idx;
 	}
 
 	// Priorität des Knotens, d. h. des zugehörigen Eintrags

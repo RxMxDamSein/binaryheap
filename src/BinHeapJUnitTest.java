@@ -25,6 +25,28 @@ class BinHeapJUnitTest {
         System.setOut(old);
         assertEquals("k 10i 8 j 9a 0 b 1 c 2  d 3 e 4  f 5  g 6   h 7",outputStream.getString().replace("\n","").replace("\r",""));
     }
+
+    @Test
+    public void testContainsBspdumb(){
+        BinHeap<String, Integer> heap = new BinHeap<String, Integer>();
+        BinHeap.Entry<String, Integer> [] entrys=new BinHeap.Entry [11];
+        for(int i=0;i<11;i++){
+            char z=97;
+            z+=i;
+            entrys[i] = heap.insert(""+z, i);
+        }
+        for(int i=0;i<11;i++){
+            assertTrue(heap.contains(entrys[i]),"Objekt "+entrys[i].prio()+","+entrys[i].data()+" sollte enthalten sein! daher TRUE nicht FALSE!");
+        }
+    }
+
+    @Test
+    public void testContains1(){
+        BinHeap<String, Integer> heap = new BinHeap<String, Integer>();
+        BinHeap.Entry<String, Integer> [] entrys=new BinHeap.Entry [1];
+        entrys[0]=heap.insert("a",0);
+        assertTrue(heap.contains(entrys[0]));
+    }
 }
 class OutputInStream extends OutputStream{
     StringBuilder mBuf=new StringBuilder();
