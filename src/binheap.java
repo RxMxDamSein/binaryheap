@@ -21,7 +21,7 @@ class BinHeap <P extends Comparable<? super P>, D> {
 	}
 
 	// Ist die Halde momentan leer?
-	boolean isEmpty (){
+	public boolean isEmpty (){
 		return wurzel==null;
 	}
 
@@ -30,7 +30,7 @@ class BinHeap <P extends Comparable<? super P>, D> {
 	 * Größe der Halde, d. h. Anzahl momentan gespeicherter Einträge liefern.
 	 * @return
 	 */
-	int size() {
+	public int size() {
 		//return nodes.size();
 		int size=0;
 		if(wurzel==null)
@@ -46,8 +46,10 @@ class BinHeap <P extends Comparable<? super P>, D> {
 
 	/** ToDo
 	 * Enthält die Halde den Eintrag e?
+	 * REWRITE!
+	 * geh vom node wo du giregst einfach soweit hoch wie möglich und kuck ob du bei der wurzel rauskommst!
 	 */
-	boolean contains (Entry<P, D> e){
+	public boolean contains (Entry<P, D> e){
 		if(e==null ||e.prio==null || wurzel==null)
 			return false;
 		Node n=e.node;
@@ -66,7 +68,9 @@ class BinHeap <P extends Comparable<? super P>, D> {
 		return false;
 	}
 
-	//ToDo
+	/*ToDo
+
+	 */
 	private boolean containsInSubTree(Node n,Node w){
 		if(w==null)
 			return false;
@@ -92,7 +96,9 @@ class BinHeap <P extends Comparable<? super P>, D> {
 	 * // Neuen Eintrag mit Priorität p und zusätzlichen Daten d erzeugen,// zur Halde hinzufügen und zurückliefern.
 	 * @return
 	 */
-	Entry<P, D> insert(P p, D d) {
+	public Entry<P, D> insert(P p, D d) {
+		if(p==null || d==null)
+			return null;
 		Entry e=new Entry(p,d);
 		Node n = new Node(e);
 		n.degree=0;
@@ -159,7 +165,7 @@ class BinHeap <P extends Comparable<? super P>, D> {
 	/**
 	 * Todo dump (Ausgabe)
 	 */
-	void dump() {
+	public void dump() {
 		//(P) nodes.get(i).prio();
 
 		if(wurzel == null) {
@@ -208,6 +214,7 @@ class BinHeap <P extends Comparable<? super P>, D> {
 	 * @return
 	 */
 	public Entry<P, D> minimum() {
+		
 		return null;
 	}
 
@@ -226,6 +233,9 @@ class BinHeap <P extends Comparable<? super P>, D> {
 	 * @return
 	 */
 	public boolean changePrio(Entry<P, D> entry, P s) {
+		if(s==null || entry==null || !contains(entry) )
+			return false;
+
 		return false;
 	}
 
@@ -341,8 +351,16 @@ class BinHeapTest {
 	    case "+": // insert prio
 		// Die laufende Nummer n wird als zusätzliche Daten
 		// verwendet.
-		entrys[n] = heap.insert(cmd[1], n);
-		n++;
+			int c=-999999;
+			if(cmd.length>2){
+				c=Integer.parseInt(cmd[2]);
+				entrys[n] = heap.insert(cmd[1], c);
+			}else{
+				entrys[n] = heap.insert(cmd[1], n);
+				n++;
+			}
+
+
 		break;
 	    case "-": // remove entry
 		heap.remove(entrys[Integer.parseInt(cmd[1])]);
