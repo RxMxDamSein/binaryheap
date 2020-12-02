@@ -242,8 +242,64 @@ class BinHeap <P extends Comparable<? super P>, D> {
 	public boolean changePrio(Entry<P, D> entry, P s) {
 		if(s==null || entry==null || !contains(entry) )
 			return false;
+		//Node e = entry.node;
+		Integer a;
+		a = s.compareTo(entry.prio);
+		//gleich
+		if (a == 0) {
+			return false;
+		}
+		entry.prio = s;
+
+		//neue prio kleiner als alte (ab nach oben)
+		if (a < 0) {
+			up(entry);
+			return true;
+		}
+
+		//neu prio größer als alte (ab nach unten)
+		if (a > 0) {
+			down(entry);
+			return true;
+		}
+		/*
+		System.out.println("Prio:");
+		System.out.println(entry.prio());
+		System.out.println("____________");
+		System.out.println("New Prio= "+s);
+		entry.prio = s;
+		System.out.println("Gechante Prio: "+entry.prio());
+		s.compareTo()
+
+		 */
 
 		return false;
+	}
+	public void up (Entry<P, D> a) {
+		Integer x = a.node.prio().compareTo(a.node.parent.prio());
+		while (x < 0) {
+			swap(a.node,a.node.parent);
+			if (a.node.parent == null) {
+				return;
+			}
+			x = a.node.prio().compareTo(a.node.parent.prio());
+		}
+	}
+	public void down (Entry<P, D> a) {
+		Integer x = a.node.prio().compareTo(a.node.parent.prio());
+		while (x > 0) {
+			swap(a.node,a.node.parent);
+			if (a.node.parent == null) {
+				return;
+			}
+			x = a.node.prio().compareTo(a.node.parent.prio());
+		}
+	}
+	public void swap(Node a,Node b) {
+		Node temp;
+		temp = a;
+		a = b;
+		b = temp;
 	}
 
 	// Eintrag einer solchen Warteschlange bzw. Halde, bestehend aus
