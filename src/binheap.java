@@ -8,7 +8,7 @@ import java.util.Vector;
 // implementieren muss) und zusätzlichen Daten eines beliebigen Typs D.
 class BinHeap <P extends Comparable<? super P>, D> {
 	//Vector<Node> nodes;
-	P lowestPrio;
+	//P lowestPrio;
 	Node wurzel;
 	Integer anzNodes;
 
@@ -107,12 +107,12 @@ class BinHeap <P extends Comparable<? super P>, D> {
 		//nodes.add(n);
 		if (isEmpty()){
 			wurzel=n;
-			lowestPrio=p;
+			//lowestPrio=p;
 		}else{
 			n.sibling=wurzel;
 			wurzel=n;
-			if(p.compareTo(lowestPrio)<0)
-				lowestPrio=p;
+			//if(p.compareTo(lowestPrio)<0)
+			//	lowestPrio=p;
 			checkSameDegree();
 		}
 		return e;
