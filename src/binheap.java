@@ -74,7 +74,9 @@ class BinHeap <P extends Comparable<? super P>, D> {
 	private boolean containsInSubTree(Node n,Node w){
 		if(w==null)
 			return false;
+		w=w.sibling;
 		Node c=w;
+
 		while(c.degree<n.degree && c.sibling!=w){
 			c=c.sibling;
 		}
@@ -111,24 +113,24 @@ class BinHeap <P extends Comparable<? super P>, D> {
 			wurzel=n;
 			if(p.compareTo(lowestPrio)<0)
 				lowestPrio=p;
-			while(checkSameDegree());
+			checkSameDegree();
 		}
 		return e;
 	}
 
-	private boolean checkSameDegree(){
+	private void checkSameDegree(){
 		Node start=wurzel;
 		while(start.sibling!=null){
 			if(start.degree==start.sibling.degree){
-				mergeSameDegree(start,start.sibling);
-				return true;
+				start=mergeSameDegree(start,start.sibling);
+				if(start.sibling==null)
+					break;
 			}
 			start=start.sibling;
 		}
-		return false;
 	}
 
-	private void mergeSameDegree(Node n1,Node n2){
+	private Node mergeSameDegree(Node n1,Node n2){
 		Node higher,lower;
 		if(((P)n1.prio()).compareTo((P)n2.prio())>0){
 			higher=n1;
@@ -148,12 +150,15 @@ class BinHeap <P extends Comparable<? super P>, D> {
 		}
 
 		if(lower.child!=null){
-			Node currNote=lower.child;
+			/*Node currNote=lower.child;
 			while(currNote.sibling!=lower.child){
 				currNote=currNote.sibling;
 			}
 			currNote.sibling=higher;
-			higher.sibling=lower.child;
+			higher.sibling=lower.child;*/
+			higher.sibling=lower.child.sibling;
+			lower.child.sibling=higher;
+			lower.child=higher;
 		}else {
 			lower.child=higher;
 			higher.sibling=higher;
@@ -161,6 +166,7 @@ class BinHeap <P extends Comparable<? super P>, D> {
 
 		higher.parent=lower;
 		lower.degree=lower.degree+1;
+		return lower;
 	}
 	/**
 	 * Todo dump (Ausgabe)
@@ -184,6 +190,7 @@ class BinHeap <P extends Comparable<? super P>, D> {
 
 	private void printChild(Node c,int leer){
 		String sleer="";
+		c=c.sibling;
 		for (int i=0;i<leer;i++)
 			sleer+=" ";
 		Node cz=c;
@@ -278,7 +285,7 @@ class BinHeap <P extends Comparable<? super P>, D> {
 	private Node<P, D> parent;
 
 	// Nachfolger mit dem größten Grad
-		// JEtzt anscheinend mit kleinstem GRAD WTF
+
 	// (falls vorhanden; bei einem Blattknoten null).
 	private Node<P, D> child;
 
