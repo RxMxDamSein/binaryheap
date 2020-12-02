@@ -10,7 +10,7 @@ class BinHeap <P extends Comparable<? super P>, D> {
 	//Vector<Node> nodes;
 	//P lowestPrio;
 	Node wurzel;
-	Integer anzNodes;
+	//Integer anzNodes;
 
 	/**
 	 * ToDo
@@ -221,8 +221,16 @@ class BinHeap <P extends Comparable<? super P>, D> {
 	 * @return
 	 */
 	public Entry<P, D> minimum() {
-		
-		return null;
+		if(wurzel==null)
+			return null;
+		Node n =wurzel;
+		Node min= wurzel;
+		while (n.sibling!=null){
+			if(((P)n.sibling.prio()).compareTo((P)min.prio())<0)
+				min=n.sibling;
+			n=n.sibling;
+		}
+		return min.entry;
 	}
 
 	/**
@@ -230,7 +238,12 @@ class BinHeap <P extends Comparable<? super P>, D> {
 	 * @return
 	 */
 	public Entry<P, D> extractMin() {
-		return null;
+		Entry e=minimum();
+		if(e==null)
+			return null;
+		Node n=e.node;
+
+		return e;
 	}
 
 	/**

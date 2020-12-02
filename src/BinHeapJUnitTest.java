@@ -24,6 +24,8 @@ class BinHeapJUnitTest {
         heap.dump();
         System.setOut(old);
         assertEquals("k 10i 8 j 9a 0 b 1 c 2  d 3 e 4  f 5  g 6   h 7",outputStream.getString().replace("\n","").replace("\r",""));
+        assertTrue(heap.size()==11,"Es sollten 11 Element drin sein!");
+        assertEquals(heap.minimum(),entrys[0],"Entry 0 should have the lowest prio!");
     }
 
     @Test
@@ -50,6 +52,7 @@ class BinHeapJUnitTest {
         BinHeap.Entry<String, Integer> [] entrys=new BinHeap.Entry [1];
         entrys[0]=heap.insert("a",0);
         assertTrue(heap.contains(entrys[0]));
+        assertTrue(heap.size()==1,"Ich hab nur eins hinzugefügt");
     }
 }
 class OutputInStream extends OutputStream{
