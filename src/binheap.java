@@ -242,7 +242,38 @@ class BinHeap <P extends Comparable<? super P>, D> {
 		if(e==null)
 			return null;
 		Node n=e.node;
+		Node c=n.child;
+		if(c==null){
+			wurzel=n.sibling;
+		}else {
+			Node cc=c;
+			Node ncc=cc.sibling;
+			Node cw=wurzel;
+			Node pcw=null;
+			do{
+				cc=ncc;
+				ncc=ncc.sibling;
+				cc.parent=null;
+				if(cc.degree<=cw.degree){
+					if(cw==wurzel){
+						cc.sibling=wurzel.sibling;
+						wurzel=cc;
+					}else {
+						cc.sibling=cw;
+						pcw.sibling=cc;
+					}
+				}else{
+					pcw=cw;
+					cw=cw.sibling;
+					if(cw==null){//add all remaining nodes!
+						pcw.sibling=cc;
+						c.sibling=null;
+						break;
+					}
+				}
 
+			}while (cc!=c);
+		}
 		return e;
 	}
 
