@@ -118,16 +118,28 @@ class BinHeap <P extends Comparable<? super P>, D> {
 		return e;
 	}
 
+
 	private void checkSameDegree(){
-		Node start=wurzel;
-		while(start.sibling!=null){
-			if(start.degree==start.sibling.degree){
-				start=mergeSameDegree(start,start.sibling);
-				if(start.sibling==null)
+		checkSameDegree(null);
+	}
+	private void checkSameDegree(Node s){
+		Node start;
+		if(s==null)
+			start= wurzel;
+		else
+			start=s;
+
+		while (start.sibling != null) {
+			if (start.degree == start.sibling.degree) {
+				start = mergeSameDegree(start, start.sibling);
+				if (start.sibling == null)
 					break;
+				else
+					continue;
 			}
-			start=start.sibling;
+			start = start.sibling;
 		}
+
 	}
 
 	private Node mergeSameDegree(Node n1,Node n2){
@@ -221,7 +233,7 @@ class BinHeap <P extends Comparable<? super P>, D> {
 	 * @return
 	 */
 	public Entry<P, D> minimum() {
-		if(wurzel==null)
+		/*if(wurzel==null)
 			return null;
 		Node n =wurzel;
 		Node min= wurzel;
@@ -230,7 +242,30 @@ class BinHeap <P extends Comparable<? super P>, D> {
 				min=n.sibling;
 			n=n.sibling;
 		}
-		return min.entry;
+		return min.entry;*/
+		Node[] mins=mins();
+		if(mins==null){
+			return null;
+		}else {
+			return mins[0].entry;
+		}
+	}
+
+	private Node[] mins(){
+		if(wurzel==null)
+			return null;
+		Node n =wurzel;
+		Node ln=null;
+		Node min= wurzel;
+		while (n.sibling!=null){
+			if(((P)n.sibling.prio()).compareTo((P)min.prio())<0){
+				min=n.sibling;
+				ln=n;
+			}
+
+			n=n.sibling;
+		}
+		return new Node[]{min,ln};
 	}
 
 	/**
@@ -238,15 +273,80 @@ class BinHeap <P extends Comparable<? super P>, D> {
 	 * @return
 	 */
 	public Entry<P, D> extractMin() {
-		Entry e=minimum();
+		Node[] e=mins();
 		if(e==null)
 			return null;
-		Node n=e.node;
-		Node c=n.child;
-		if(c==null){
-			wurzel=n.sibling;
-		}else {
-			Node cc=c;
+
+		Node child=e[0].child;
+		if(e[1]!=null){//Min aus Heap entfernen
+			e[1].sibling=e[0].sibling;
+		}else{
+			wurzel=e[0].sibling;
+		}
+
+
+		if(child!=null){
+			Node curChild=child.sibling;
+			Node curWurz=wurzel;
+			Node lastWur=null;
+			boolean rand=false;
+			boolean nwurzel=false;
+			if(curWurz==null){
+				//System.out.println("keine Wurzel!");
+				nwurzel=true;
+				rand=true;
+				wurzel=curWurz=curChild;
+				//curWurz.sibling=child;
+				child.sibling=null;
+			}
+			do{
+				curChild.parent=null;
+
+				if(!rand){
+					if( curChild.degree<=curWurz.degree){
+						Node zC=curChild.sibling;
+						Node zW;
+						if (lastWur!=null){
+							zW=lastWur.sibling;
+							lastWur.sibling=curChild;
+						}else{
+							zW=curWurz;
+							wurzel=curChild;
+						}
+						curChild.sibling=zW;
+						curChild=zC;
+					} else {
+						if(curWurz.sibling==null){
+							rand=true;
+						}else{
+							lastWur=curWurz;
+							curWurz=curWurz.sibling;
+						}
+					}
+				}else {
+					//Node zC=curChild.sibling;
+
+					//curWurz.sibling=curChild;
+					//curChild.sibling=null;
+					//curChild=zC;
+					if(nwurzel)
+						curChild=curChild.sibling;
+					else {
+						System.out.println("REEEEEEEEE\n"+(curWurz.prio()+" - "+curWurz.entry.data()));
+						break;
+					}
+					//curWurz=curChild;
+
+				}
+
+			}while(curChild!=child.sibling);
+			//last child has to be done!
+			/*if(curChild!=null){
+				curChild.parent=null;
+				curWurz.sibling=curChild;
+				curChild.sibling=null;
+			}*/
+			/*Node cc=c;
 			Node ncc=cc.sibling;
 			Node cw=wurzel;
 			Node pcw=null;
@@ -273,8 +373,11 @@ class BinHeap <P extends Comparable<? super P>, D> {
 				}
 
 			}while (cc!=c);
+			*/
 		}
-		return e;
+		if(wurzel!=null)
+			checkSameDegree();
+		return e[0].entry;
 	}
 
 	/**

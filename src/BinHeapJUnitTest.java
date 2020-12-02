@@ -29,6 +29,66 @@ class BinHeapJUnitTest {
     }
 
     @Test
+    public void testExMin(){
+        BinHeap<String, Integer> heap = new BinHeap<String, Integer>();
+        BinHeap.Entry<String, Integer> [] entrys=new BinHeap.Entry [11];
+        for(int i=0;i<4;i++){
+            char z=97;
+            z+=i;
+            entrys[i] = heap.insert(""+z, i);
+        }
+        OutputInStream outputStream=new OutputInStream();
+        PrintStream stdout=new PrintStream(outputStream);
+        PrintStream old=System.out;
+        System.setOut(stdout);
+        assertEquals( entrys[0],heap.extractMin(),"min should be a");
+        heap.dump();
+        System.setOut(old);
+        //System.out.println(outputStream.getString());
+        assertEquals("b 1c 2 d 3",outputStream.getString().replace("\n","").replace("\r",""));
+    }
+
+    @Test
+    public void testExMinABCDEFGH(){
+        BinHeap<String, Integer> heap = new BinHeap<String, Integer>();
+        BinHeap.Entry<String, Integer> [] entrys=new BinHeap.Entry [11];
+        for(int i=0;i<8;i++){
+            char z=97;
+            z+=i;
+            entrys[i] = heap.insert(""+z, i);
+        }
+        OutputInStream outputStream=new OutputInStream();
+        PrintStream stdout=new PrintStream(outputStream);
+        PrintStream old=System.out;
+        System.setOut(stdout);
+        assertEquals( entrys[0],heap.extractMin(),"min should be a");
+        heap.dump();
+        System.setOut(old);
+        //System.out.println(outputStream.getString());
+        assertEquals("b 1c 2 d 3e 4 f 5 g 6  h 7",outputStream.getString().replace("\n","").replace("\r",""));
+    }
+
+    @Test
+    public void testInsertABCD(){
+        BinHeap<String, Integer> heap = new BinHeap<String, Integer>();
+        BinHeap.Entry<String, Integer> [] entrys=new BinHeap.Entry [11];
+        for(int i=0;i<4;i++){
+            char z=97;
+            z+=i;
+            entrys[i] = heap.insert(""+z, i);
+        }
+        OutputInStream outputStream=new OutputInStream();
+        PrintStream stdout=new PrintStream(outputStream);
+        PrintStream old=System.out;
+        System.setOut(stdout);
+        heap.dump();
+        System.setOut(old);
+        assertEquals("a 0 b 1 c 2  d 3",outputStream.getString().replace("\n","").replace("\r",""));
+        assertTrue(heap.size()==4,"Es sollten 11 Element drin sein!");
+        assertEquals(heap.minimum(),entrys[0],"Entry 0 should have the lowest prio!");
+    }
+
+    @Test
     public void testContainsBspdumb(){
         BinHeap<String, Integer> heap = new BinHeap<String, Integer>();
         BinHeap.Entry<String, Integer> [] entrys=new BinHeap.Entry [1000];
