@@ -124,14 +124,28 @@ class BinHeapJUnitTest {
         for(int i=0;i<1000;i++){
             char z=97;
             z+=i;
-            entrys[i] = heap.insert(""+z, i);
+            entrys2[i] = heap2.insert(""+z, i);
+        }
+        BinHeap<Double, String> heap3 = new BinHeap<>();
+        BinHeap.Entry [] entrys3=new BinHeap.Entry [10];
+        for(int i=0;i<10;i++){
+            char z=97;
+            z+=i;
+            entrys3[i] = heap3.insert(i*0.99, ""+z);
         }
         for(int j=0;j<20;j++){
             for(int i=0;i<1000;i++){
                 boolean b=heap.contains(entrys[i]);
                 boolean b2=heap.contains(entrys2[i]);
+                if(i<10){
+                    boolean b3=heap.contains(entrys3[i]);
+                    assertFalse(b3,"ist aus nem anderen heap");
+                    assertTrue(heap3.contains(entrys3[i]));
+                }
+
                 assertTrue(b,"Objekt "+entrys[i].prio()+","+entrys[i].data()+" sollte enthalten sein! daher TRUE nicht FALSE!");
                 assertFalse(b2,"ist aus nem anderen heap -> nicht bei dir");
+                assertTrue(heap2.contains(entrys2[i]));
             }
         }
     }
