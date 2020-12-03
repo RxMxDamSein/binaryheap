@@ -8,15 +8,15 @@
 // implementieren muss) und zusätzlichen Daten eines beliebigen Typs D.
 class BinHeap <P extends Comparable<? super P>, D> {
 	//Vector<Node> nodes;
-	P lowestPrio;
 	Node<P,D> wurzel;
+	Entry<P,D> mInf; //für remove
 	//Integer anzNodes;
 
 
 	public BinHeap(){
 		//nodes=new Vector<Node>();
 		wurzel=null;
-		lowestPrio=null;
+		mInf=null;
 	}
 
 	// Ist die Halde momentan leer?
@@ -137,12 +137,10 @@ class BinHeap <P extends Comparable<? super P>, D> {
 		//nodes.add(n);
 		if (isEmpty()){
 			wurzel=n;
-			lowestPrio=p;
 		}else{
 			n.sibling=wurzel;
 			wurzel=n;
-			if(p.compareTo(lowestPrio)<0)
-				lowestPrio=p;
+
 			checkSameDegree();
 		}
 		return e;
@@ -244,14 +242,24 @@ class BinHeap <P extends Comparable<? super P>, D> {
 
 
 
+
 	/**
 	 * ToDo
 	 * @param entry entry to be removed
 	 * @return removed entry
 	 */
 	public boolean remove(Entry<P, D> entry) {
-		P prio=lowestPrio;
-		return false;
+		if(entry==null || !contains(entry)){
+			return false;
+		}
+		mInf= entry;
+		/*
+		the following to funtions will be manipulated!
+		 */
+		changePrio(entry,entry.prio());
+		extractMin();
+		mInf=null;
+		return true;
 	}
 
 	/**
@@ -283,10 +291,15 @@ class BinHeap <P extends Comparable<? super P>, D> {
 		Node<P,D> n =wurzel;
 		Node<P,D> ln=null;
 		Node<P,D> min= wurzel;
+		if(wurzel.entry==mInf){
+			return new Node[]{wurzel,null};
+		}
 		while (n.sibling!=null){
-			if((n.sibling.prio()).compareTo(min.prio())<0){
+			if(n.sibling.entry==mInf || n.sibling.prio().compareTo(min.prio())<0){
 				min=n.sibling;
 				ln=n;
+				if(n.sibling.entry==mInf)
+					break;
 			}
 
 			n=n.sibling;
@@ -399,7 +412,10 @@ class BinHeap <P extends Comparable<? super P>, D> {
 			return false;
 		//Node e = entry.node;
 		Integer a;
+
 		a = s.compareTo(entry.prio);
+		if(entry==mInf)
+			a=-1;
 		//gleich
 		if (a == 0) {
 			return false;
@@ -436,6 +452,8 @@ class BinHeap <P extends Comparable<? super P>, D> {
 		}
 		Entry<P, D> z = null;
 		Integer x = a.node.prio().compareTo(a.node.parent.prio());
+		if(a==mInf)
+			x=-1;
 		while (x < 0) {
 			if (a.node.parent != null) z = a.node.parent.entry;
 			swap(a,a.node.parent.entry);
@@ -446,6 +464,8 @@ class BinHeap <P extends Comparable<? super P>, D> {
 			}
 
 			x = a.node.prio().compareTo(a.node.parent.prio());
+			if(a==mInf)
+				x=-1;
 		}
 	}
 	public void down (Entry<P, D> a) {

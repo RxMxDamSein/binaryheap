@@ -150,6 +150,27 @@ class BinHeapJUnitTest {
         }
     }
 
+    @Test
+    public void testRemoveHfromABCDEFGHIJK(){
+        BinHeap<String, Integer> heap = new BinHeap<String, Integer>();
+        BinHeap.Entry<String, Integer> [] entrys=new BinHeap.Entry [11];
+        for(int i=0;i<11;i++){
+            char z=97;
+            z+=i;
+            entrys[i] = heap.insert(""+z, i);
+        }
+        OutputInStream outputStream=new OutputInStream();
+        PrintStream stdout=new PrintStream(outputStream);
+        PrintStream old=System.out;
+        System.setOut(stdout);
+        assertTrue(heap.remove(entrys[7]));
+        heap.dump();
+        System.setOut(old);
+        assertEquals("b 1 k 10a 0 f 5 e 4  g 6 c 2  d 3  i 8   j 9",outputStream.getString().replace("\n","").replace("\r",""));
+        assertTrue(heap.size()==10,"Es sollten 4 Element drin sein!");
+        assertEquals(heap.minimum(),entrys[0],"Entry 0 should have the lowest prio!");
+    }
+
 
     @Test
     public void testContains1(){
