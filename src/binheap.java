@@ -8,7 +8,7 @@
 // implementieren muss) und zusätzlichen Daten eines beliebigen Typs D.
 class BinHeap <P extends Comparable<? super P>, D> {
 	//Vector<Node> nodes;
-	//P lowestPrio;
+	P lowestPrio;
 	Node<P,D> wurzel;
 	//Integer anzNodes;
 
@@ -16,6 +16,7 @@ class BinHeap <P extends Comparable<? super P>, D> {
 	public BinHeap(){
 		//nodes=new Vector<Node>();
 		wurzel=null;
+		lowestPrio=null;
 	}
 
 	// Ist die Halde momentan leer?
@@ -136,12 +137,12 @@ class BinHeap <P extends Comparable<? super P>, D> {
 		//nodes.add(n);
 		if (isEmpty()){
 			wurzel=n;
-			//lowestPrio=p;
+			lowestPrio=p;
 		}else{
 			n.sibling=wurzel;
 			wurzel=n;
-			//if(p.compareTo(lowestPrio)<0)
-			//	lowestPrio=p;
+			if(p.compareTo(lowestPrio)<0)
+				lowestPrio=p;
 			checkSameDegree();
 		}
 		return e;
@@ -249,6 +250,7 @@ class BinHeap <P extends Comparable<? super P>, D> {
 	 * @return removed entry
 	 */
 	public boolean remove(Entry<P, D> entry) {
+		P prio=lowestPrio;
 		return false;
 	}
 
@@ -387,7 +389,7 @@ class BinHeap <P extends Comparable<? super P>, D> {
 	}
 
 	/**
-	 * ToDo
+	 *
 	 * @param entry Entry which prio shall be changed
 	 * @param s new prio
 	 * @return success
