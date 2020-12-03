@@ -429,30 +429,67 @@ class BinHeap <P extends Comparable<? super P>, D> {
 		return false;
 	}
 	public void up (Entry<P, D> a) {
+		if (a.node.parent == null) {
+			return;
+		}
+		Entry<P, D> z = null;
 		Integer x = a.node.prio().compareTo(a.node.parent.prio());
 		while (x < 0) {
-			swap(a.node,a.node.parent);
+			if (a.node.parent != null) z = a.node.parent.entry;
+			swap(a,a.node.parent.entry);
+			 //a = z;
+
 			if (a.node.parent == null) {
 				return;
 			}
+
 			x = a.node.prio().compareTo(a.node.parent.prio());
 		}
 	}
 	public void down (Entry<P, D> a) {
-		Integer x = a.node.prio().compareTo(a.node.parent.prio());
+		if (a.node.child == null) {
+			return;
+		}
+		Entry<P, D> z = null;
+		Integer x = a.node.prio().compareTo(a.node.child.prio());
 		while (x > 0) {
-			swap(a.node,a.node.parent);
-			if (a.node.parent == null) {
+			if (a.node.child != null) {
+				z = a.node.child.entry;
+			}
+			swap(a,a.node.child.entry);
+			 //a = z;
+			if (a == null || a.node.child == null) {
 				return;
 			}
-			x = a.node.prio().compareTo(a.node.parent.prio());
+
+
+
+			x = a.node.prio().compareTo(a.node.child.prio());
 		}
 	}
-	public void swap(Node<P,D> a,Node<P,D> b) {
-		Node<P,D> temp;
-		temp = a;
-		a = b;
-		b = temp;
+	public void swap(Entry<P, D> a,Entry<P, D> b) {
+		/*
+		P temp = a.prio;
+		a.prio = b.prio;
+		b.prio = temp;
+		D tamp2 = a.data;
+		a.data = b.data;
+		b.data = tamp2;
+
+		 */
+
+		Node temp3 = a.node;
+		Entry<P, D> temp4 = a.node.entry;
+		a.node.entry = b;
+		a.node = b.node;
+		b.node.entry = temp4;
+		b.node = temp3;
+
+
+
+
+
+
 	}
 
 	// Eintrag einer solchen Warteschlange bzw. Halde, bestehend aus
