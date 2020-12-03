@@ -80,7 +80,7 @@ class BinHeap <P extends Comparable<? super P>, D> {
 	 * REWRITE!
 	 * geh vom node wo du giregst einfach soweit hoch wie möglich und kuck ob du bei der wurzel rauskommst!
 	 */
-	public boolean oldcontains (Entry<P, D> e){
+	/*public boolean oldcontains (Entry<P, D> e){
 		if(e==null ||e.prio==null || wurzel==null)
 			return false;
 		Node<P,D> n=e.node;
@@ -121,7 +121,7 @@ class BinHeap <P extends Comparable<? super P>, D> {
 		} while(c!=w.child && c.degree>n.degree);
 		return false;
 	}
-
+*/
 	/**
 	 *
 	 * // Neuen Eintrag mit Priorität p und zusätzlichen Daten d erzeugen,// zur Halde hinzufügen und zurückliefern.
