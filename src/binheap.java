@@ -54,12 +54,33 @@ class BinHeap <P extends Comparable<? super P>, D> {
 	}
 
 
+
+	public boolean contains (Entry<P, D> e){
+		if(e==null||e.prio==null || wurzel==null){
+			return false;
+		}
+		Node<P,D> n=e.node,nz,wz;
+		nz=n;
+		while(nz.parent!=null)
+			nz=nz.parent;
+		wz=wurzel;
+		while (wz.degree<nz.degree&& wz!=null){
+			wz=wz.sibling;
+		}
+		if(wz==null || wz.degree>nz.degree)
+			return false;
+		if(wz.hashCode()==nz.hashCode()&&wz.prio().compareTo(nz.prio())==0&& wz.entry.data().equals(nz.entry.data()))
+			return true;
+		else {
+			return false;
+		}
+	}
 	/**
 	 * Enthält die Halde den Eintrag e?
 	 * REWRITE!
 	 * geh vom node wo du giregst einfach soweit hoch wie möglich und kuck ob du bei der wurzel rauskommst!
 	 */
-	public boolean contains (Entry<P, D> e){
+	public boolean oldcontains (Entry<P, D> e){
 		if(e==null ||e.prio==null || wurzel==null)
 			return false;
 		Node<P,D> n=e.node;
@@ -71,7 +92,7 @@ class BinHeap <P extends Comparable<? super P>, D> {
 			w=w.sibling;
 		}
 		do{
-			if((w.degree==n.degree && (w.prio()).compareTo((n.prio()))==0 && w.entry.data().equals(n.entry.data())|| (w.degree>n.degree) &&containsInSubTree(n,w.child)))
+			if((w.degree==n.degree && w.prio().compareTo(n.prio())==0 && w.entry.data().equals(n.entry.data()))|| (w.degree>n.degree) &&containsInSubTree(n,w.child))
 				return true;
 			w=w.sibling;
 		} while (w!=null);
@@ -107,7 +128,7 @@ class BinHeap <P extends Comparable<? super P>, D> {
 	 * @return entry to insert
 	 */
 	public Entry<P, D> insert(P p, D d) {
-		if(p==null || d==null)
+		if(p==null /*|| d==null*/)
 			return null;
 		Entry<P,D> e=new Entry<>(p,d);
 		Node<P,D> n = new Node<>(e);
@@ -557,6 +578,10 @@ class BinHeapTest {
 
 
 		break;
+			case "++":
+				entrys[n] = heap.insert(cmd[1], null);
+				n++;
+				break;
 	    case "-": // remove entry
 		heap.remove(entrys[Integer.parseInt(cmd[1])]);
 		break;
