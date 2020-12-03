@@ -203,7 +203,7 @@ class BinHeap <P extends Comparable<? super P>, D> {
 		}
 		Node x = wurzel;
 		while (x != null) {
-			System.out.println(x.prio()+" "+x.entry.data+" "+x.degree);
+			System.out.println(x.prio()+" "+x.entry.data);
 			Node y=x.child;
 			if(y!=null){
 				printChild(y,1);
@@ -221,7 +221,7 @@ class BinHeap <P extends Comparable<? super P>, D> {
 			sleer+=" ";
 		Node cz=c;
 		do{
-			System.out.println(sleer+cz.prio()+" "+cz.entry.data+" "+cz.degree);
+			System.out.println(sleer+cz.prio()+" "+cz.entry.data);
 			if(cz.child!=null){
 				printChild(cz.child,leer+1);
 			}
@@ -308,51 +308,57 @@ class BinHeap <P extends Comparable<? super P>, D> {
 			Node he=null;
 			while(h1!=null || h2!=null || h!=null){
 				if(h1!=null &&h1.degree==k){
+					Node zn=h1.sibling;
 					if(h==null){
-						h=new Node(new Entry(h1.prio(),h1.entry.data()));
-						h.child=h1.child;
-						h.degree=h1.degree;
+						//h=nw Node(new Entry(h1.prio(),h1.entry.data()));
+						h=h1;
+						h.parent=null;
+						h.sibling=null;
 					}else {
 						Node z=h;
 						while (z.sibling!=null)
 							z=z.sibling;
-						z.sibling=new Node(new Entry(h1.prio(),h1.entry.data()));
-						z.sibling.child=h1.child;
-						z.sibling.degree=h1.degree;
+						//z.sibling=new Node(new Entry(h1.prio(),h1.entry.data()));
+						z.sibling=h1;
+						z.sibling.parent=null;
+						z.sibling.sibling=null;
 					}
-					h1=h1.sibling;
+					h1=zn;
 				}
 				if(h2!= null &&h2.degree==k){
+					Node zn=h2.sibling;
 					if(h==null){
-						h=new Node(new Entry(h2.prio(),h2.entry.data()));
-						h.child=h2.child;
-						h.degree=h2.degree;
+						//h=nw Node(new Entry(h1.prio(),h1.entry.data()));
+						h=h2;
+						h.parent=null;
+						h.sibling=null;
 					}else {
 						Node z=h;
 						while (z.sibling!=null)
 							z=z.sibling;
-						z.sibling=new Node(new Entry(h2.prio(),h2.entry.data()));
-						z.sibling.child=h2.child;
-						z.sibling.degree=h2.degree;
+						z.sibling=h2;
+						z.sibling.parent=null;
+						z.sibling.sibling=null;
 					}
-					h2=h2.sibling;
+					h2=zn;
 				}
 				bh.wurzel=h;
 				if(bh.anzTree()%2==1){//anzahl Bäume %2 == 1
+					Node zn=h.sibling;
 					if(he==null) {
-						he = new Node(new Entry(h.prio(), h.entry.data()));
-						he.child = h.child;
-						he.degree=h.degree;
+						he=h;
+						he.parent=null;
+						he.sibling=null;
 					}else{
 						Node z=he;
 						while (z.sibling!=null)
 							z=z.sibling;
-						z.sibling=new Node(new Entry(h.prio(),h.entry.data()));
-						z.sibling.child=h.child;
-						z.degree=h.degree;
+						z.sibling=h;
+						z.sibling.parent=null;
+						z.sibling.sibling=null;
 					}
 
-					h=h.sibling;
+					h=zn;
 				}
 
 				if(h!=null){

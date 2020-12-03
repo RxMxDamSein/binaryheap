@@ -69,6 +69,28 @@ class BinHeapJUnitTest {
     }
 
     @Test
+    public void testExMinABCDEFGHIJK(){
+        BinHeap<String, Integer> heap = new BinHeap<String, Integer>();
+        BinHeap.Entry<String, Integer> [] entrys=new BinHeap.Entry [11];
+        for(int i=0;i<11;i++){
+            char z=97;
+            z+=i;
+            entrys[i] = heap.insert(""+z, i);
+        }
+        OutputInStream outputStream=new OutputInStream();
+        PrintStream stdout=new PrintStream(outputStream);
+        PrintStream old=System.out;
+        System.setOut(stdout);
+        assertEquals(heap.size(),11);
+        assertEquals( entrys[0],heap.extractMin(),"min should be a");
+        heap.dump();
+        System.setOut(old);
+        //System.out.println(outputStream.getString());
+        assertEquals("b 1 k 10c 2 d 3 i 8  j 9 e 4  f 5  g 6   h 7",outputStream.getString().replace("\n","").replace("\r",""));
+        assertEquals(heap.size(),10);
+    }
+
+    @Test
     public void testInsertABCD(){
         BinHeap<String, Integer> heap = new BinHeap<String, Integer>();
         BinHeap.Entry<String, Integer> [] entrys=new BinHeap.Entry [11];
