@@ -1,6 +1,6 @@
-import javafx.util.Pair;
 
-import java.util.Vector;
+
+
 
 // Als Binomial-Halde implementierte Minimum-Vorrangwarteschlange
 // mit Prioritäten eines beliebigen Typs P (der die Schnittstelle
@@ -9,12 +9,10 @@ import java.util.Vector;
 class BinHeap <P extends Comparable<? super P>, D> {
 	//Vector<Node> nodes;
 	//P lowestPrio;
-	Node wurzel;
+	Node<P,D> wurzel;
 	//Integer anzNodes;
 
-	/**
-	 * ToDo
-	 */
+
 	public BinHeap(){
 		//nodes=new Vector<Node>();
 		wurzel=null;
@@ -26,16 +24,16 @@ class BinHeap <P extends Comparable<? super P>, D> {
 	}
 
 	/**
-	 * Todo
+	 *
 	 * Größe der Halde, d. h. Anzahl momentan gespeicherter Einträge liefern.
-	 * @return
+	 * @return size
 	 */
 	public int size() {
 		//return nodes.size();
 		int size=0;
 		if(wurzel==null)
 			return 0;
-		Node n=wurzel;
+		Node<P,D> n=wurzel;
 		while (n!=null){
 			size+=Math.pow(2,n.degree);
 			n=n.sibling;
@@ -47,7 +45,7 @@ class BinHeap <P extends Comparable<? super P>, D> {
 		int anz=0;
 		if(wurzel==null)
 			return 0;
-		Node n=wurzel;
+		Node<P,D> n=wurzel;
 		while (n!=null){
 			anz++;
 			n=n.sibling;
@@ -56,7 +54,7 @@ class BinHeap <P extends Comparable<? super P>, D> {
 	}
 
 
-	/** ToDo
+	/**
 	 * Enthält die Halde den Eintrag e?
 	 * REWRITE!
 	 * geh vom node wo du giregst einfach soweit hoch wie möglich und kuck ob du bei der wurzel rauskommst!
@@ -64,30 +62,28 @@ class BinHeap <P extends Comparable<? super P>, D> {
 	public boolean contains (Entry<P, D> e){
 		if(e==null ||e.prio==null || wurzel==null)
 			return false;
-		Node n=e.node;
+		Node<P,D> n=e.node;
 		int degree=n.degree;
 		if(degree<0)
 			return false;
-		Node w=wurzel;
+		Node<P,D> w=wurzel;
 		while (w!=null && w.degree<degree){
 			w=w.sibling;
 		}
 		do{
-			if((w.degree==n.degree && ((P)w.prio()).compareTo((P)(n.prio()))==0 && w.entry.data().equals(n.entry.data())|| (w.degree>n.degree) &&containsInSubTree(n,w.child)))
+			if((w.degree==n.degree && (w.prio()).compareTo((n.prio()))==0 && w.entry.data().equals(n.entry.data())|| (w.degree>n.degree) &&containsInSubTree(n,w.child)))
 				return true;
 			w=w.sibling;
 		} while (w!=null);
 		return false;
 	}
 
-	/*ToDo
 
-	 */
-	private boolean containsInSubTree(Node n,Node w){
+	private boolean containsInSubTree(Node<P,D> n,Node<P,D> w){
 		if(w==null)
 			return false;
 		w=w.sibling;
-		Node c=w;
+		Node<P,D> c=w;
 
 		while(c.degree<n.degree && c.sibling!=w){
 			c=c.sibling;
@@ -95,7 +91,7 @@ class BinHeap <P extends Comparable<? super P>, D> {
 		if(c.degree<n.degree)
 			return false;
 		do{
-			if(c.degree==n.degree && ((P)c.prio()).compareTo((P)(n.prio()))==0 && c.entry.data().equals(n.entry.data()))
+			if(c.degree==n.degree && (c.prio()).compareTo((n.prio()))==0 && c.entry.data().equals(n.entry.data()))
 				return true;
 			if(c.child!=null)
 				if (containsInSubTree(n,c.child))
@@ -106,15 +102,15 @@ class BinHeap <P extends Comparable<? super P>, D> {
 	}
 
 	/**
-	 * Todo
+	 *
 	 * // Neuen Eintrag mit Priorität p und zusätzlichen Daten d erzeugen,// zur Halde hinzufügen und zurückliefern.
-	 * @return
+	 * @return entry to insert
 	 */
 	public Entry<P, D> insert(P p, D d) {
 		if(p==null || d==null)
 			return null;
-		Entry e=new Entry(p,d);
-		Node n = new Node(e);
+		Entry<P,D> e=new Entry<>(p,d);
+		Node<P,D> n = new Node<>(e);
 		n.degree=0;
 		//nodes.add(n);
 		if (isEmpty()){
@@ -131,16 +127,10 @@ class BinHeap <P extends Comparable<? super P>, D> {
 	}
 
 
-	private void checkSameDegree(){
-		checkSameDegree(null);
-	}
-	private void checkSameDegree(Node s){
-		Node start;
-		if(s==null)
-			start= wurzel;
-		else
-			start=s;
 
+	private void checkSameDegree(){
+		Node<P,D> start;
+		start= wurzel;
 		while (start.sibling != null) {
 			if (start.degree == start.sibling.degree) {
 				start = mergeSameDegree(start, start.sibling);
@@ -151,19 +141,18 @@ class BinHeap <P extends Comparable<? super P>, D> {
 			}
 			start = start.sibling;
 		}
-
 	}
 
-	private Node mergeSameDegree(Node n1,Node n2){
-		Node higher,lower;
-		if(((P)n1.prio()).compareTo((P)n2.prio())>0){
+	private Node<P,D> mergeSameDegree(Node<P,D> n1,Node<P,D> n2){
+		Node<P,D> higher,lower;
+		if((n1.prio()).compareTo(n2.prio())>0){
 			higher=n1;
 			lower=n2;
 		}else{
 			higher=n2;
 			lower=n1;
 		}
-		Node bFh=wurzel;	//before higher
+		Node<P,D> bFh=wurzel;	//before higher
 		if(wurzel!=higher) {
 			while (bFh.sibling != higher) {
 				bFh = bFh.sibling;
@@ -193,7 +182,7 @@ class BinHeap <P extends Comparable<? super P>, D> {
 		return lower;
 	}
 	/**
-	 * Todo dump (Ausgabe)
+	 *  dump (Ausgabe)
 	 */
 	public void dump() {
 		//(P) nodes.get(i).prio();
@@ -201,10 +190,10 @@ class BinHeap <P extends Comparable<? super P>, D> {
 		if(wurzel == null) {
 			return;
 		}
-		Node x = wurzel;
+		Node<P,D> x = wurzel;
 		while (x != null) {
 			System.out.println(x.prio()+" "+x.entry.data);
-			Node y=x.child;
+			Node<P,D> y=x.child;
 			if(y!=null){
 				printChild(y,1);
 			}
@@ -214,12 +203,12 @@ class BinHeap <P extends Comparable<? super P>, D> {
 
 
 
-	private void printChild(Node c,int leer){
+	private void printChild(Node<P,D> c,int leer){
 		String sleer="";
 		c=c.sibling;
 		for (int i=0;i<leer;i++)
 			sleer+=" ";
-		Node cz=c;
+		Node<P,D> cz=c;
 		do{
 			System.out.println(sleer+cz.prio()+" "+cz.entry.data);
 			if(cz.child!=null){
@@ -235,16 +224,16 @@ class BinHeap <P extends Comparable<? super P>, D> {
 
 	/**
 	 * ToDo
-	 * @param entry
-	 * @return
+	 * @param entry entry to be removed
+	 * @return removed entry
 	 */
 	public boolean remove(Entry<P, D> entry) {
 		return false;
 	}
 
 	/**
-	 * ToDo
-	 * @return
+	 *
+	 * @return returns Entry with lowest priority of the binheap
 	 */
 	public Entry<P, D> minimum() {
 		/*if(wurzel==null)
@@ -257,7 +246,7 @@ class BinHeap <P extends Comparable<? super P>, D> {
 			n=n.sibling;
 		}
 		return min.entry;*/
-		Node[] mins=mins();
+		Node<P,D>[] mins=mins();
 		if(mins==null){
 			return null;
 		}else {
@@ -265,14 +254,14 @@ class BinHeap <P extends Comparable<? super P>, D> {
 		}
 	}
 
-	private Node[] mins(){
+	private Node<P,D>[] mins(){
 		if(wurzel==null)
 			return null;
-		Node n =wurzel;
-		Node ln=null;
-		Node min= wurzel;
+		Node<P,D> n =wurzel;
+		Node<P,D> ln=null;
+		Node<P,D> min= wurzel;
 		while (n.sibling!=null){
-			if(((P)n.sibling.prio()).compareTo((P)min.prio())<0){
+			if((n.sibling.prio()).compareTo(min.prio())<0){
 				min=n.sibling;
 				ln=n;
 			}
@@ -283,15 +272,15 @@ class BinHeap <P extends Comparable<? super P>, D> {
 	}
 
 	/**
-	 * ToDo
-	 * @return
+	 *
+	 * @return returns Entry with lowest prio
 	 */
 	public Entry<P, D> extractMin() {
-		Node[] e=mins();
+		Node<P,D>[] e=mins();
 		if(e==null)
 			return null;
 
-		Node child=e[0].child;
+		Node<P,D> child=e[0].child;
 		if(e[1]!=null){//Min aus Heap entfernen
 			e[1].sibling=e[0].sibling;
 		}else{
@@ -301,21 +290,21 @@ class BinHeap <P extends Comparable<? super P>, D> {
 		if(child!=null){
 			BinHeap<P,D> bh=new BinHeap<>();
 			int k=0;
-			Node h1=wurzel;
-			Node h2=child.sibling;
+			Node<P,D> h1=wurzel;
+			Node<P,D> h2=child.sibling;
 			child.sibling=null;
-			Node h=null;
-			Node he=null;
+			Node<P,D> h=null;
+			Node<P,D> he=null;
 			while(h1!=null || h2!=null || h!=null){
 				if(h1!=null &&h1.degree==k){
-					Node zn=h1.sibling;
+					Node<P,D> zn=h1.sibling;
 					if(h==null){
 						//h=nw Node(new Entry(h1.prio(),h1.entry.data()));
 						h=h1;
 						h.parent=null;
 						h.sibling=null;
 					}else {
-						Node z=h;
+						Node<P,D> z=h;
 						while (z.sibling!=null)
 							z=z.sibling;
 						//z.sibling=new Node(new Entry(h1.prio(),h1.entry.data()));
@@ -326,14 +315,14 @@ class BinHeap <P extends Comparable<? super P>, D> {
 					h1=zn;
 				}
 				if(h2!= null &&h2.degree==k){
-					Node zn=h2.sibling;
+					Node<P,D> zn=h2.sibling;
 					if(h==null){
 						//h=nw Node(new Entry(h1.prio(),h1.entry.data()));
 						h=h2;
 						h.parent=null;
 						h.sibling=null;
 					}else {
-						Node z=h;
+						Node<P,D> z=h;
 						while (z.sibling!=null)
 							z=z.sibling;
 						z.sibling=h2;
@@ -344,13 +333,13 @@ class BinHeap <P extends Comparable<? super P>, D> {
 				}
 				bh.wurzel=h;
 				if(bh.anzTree()%2==1){//anzahl Bäume %2 == 1
-					Node zn=h.sibling;
+					Node<P,D> zn=h.sibling;
 					if(he==null) {
 						he=h;
 						he.parent=null;
 						he.sibling=null;
 					}else{
-						Node z=he;
+						Node<P,D> z=he;
 						while (z.sibling!=null)
 							z=z.sibling;
 						z.sibling=h;
@@ -378,9 +367,9 @@ class BinHeap <P extends Comparable<? super P>, D> {
 
 	/**
 	 * ToDo
-	 * @param entry
-	 * @param s
-	 * @return
+	 * @param entry Entry which prio shall be changed
+	 * @param s new prio
+	 * @return success
 	 */
 	public boolean changePrio(Entry<P, D> entry, P s) {
 		if(s==null || entry==null || !contains(entry) )
@@ -438,8 +427,8 @@ class BinHeap <P extends Comparable<? super P>, D> {
 			x = a.node.prio().compareTo(a.node.parent.prio());
 		}
 	}
-	public void swap(Node a,Node b) {
-		Node temp;
+	public void swap(Node<P,D> a,Node<P,D> b) {
+		Node<P,D> temp;
 		temp = a;
 		a = b;
 		b = temp;

@@ -106,7 +106,7 @@ class BinHeapJUnitTest {
         heap.dump();
         System.setOut(old);
         assertEquals("a 0 b 1 c 2  d 3",outputStream.getString().replace("\n","").replace("\r",""));
-        assertTrue(heap.size()==4,"Es sollten 11 Element drin sein!");
+        assertTrue(heap.size()==4,"Es sollten 4 Element drin sein!");
         assertEquals(heap.minimum(),entrys[0],"Entry 0 should have the lowest prio!");
     }
 
