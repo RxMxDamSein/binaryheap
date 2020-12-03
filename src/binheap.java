@@ -203,7 +203,7 @@ class BinHeap <P extends Comparable<? super P>, D> {
 		}
 		Node x = wurzel;
 		while (x != null) {
-			System.out.println(x.prio()+" "+x.entry.data);
+			System.out.println(x.prio()+" "+x.entry.data+" "+x.degree);
 			Node y=x.child;
 			if(y!=null){
 				printChild(y,1);
@@ -212,6 +212,8 @@ class BinHeap <P extends Comparable<? super P>, D> {
 		}
 	}
 
+
+
 	private void printChild(Node c,int leer){
 		String sleer="";
 		c=c.sibling;
@@ -219,7 +221,7 @@ class BinHeap <P extends Comparable<? super P>, D> {
 			sleer+=" ";
 		Node cz=c;
 		do{
-			System.out.println(sleer+cz.prio()+" "+cz.entry.data);
+			System.out.println(sleer+cz.prio()+" "+cz.entry.data+" "+cz.degree);
 			if(cz.child!=null){
 				printChild(cz.child,leer+1);
 			}
