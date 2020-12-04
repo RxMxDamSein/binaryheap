@@ -42,7 +42,7 @@ class BinHeap <P extends Comparable<? super P>, D> {
 		return size;
 	}
 
-	public int anzTree(){
+	private int anzTree(){
 		int anz=0;
 		if(wurzel==null)
 			return 0;
@@ -60,12 +60,12 @@ class BinHeap <P extends Comparable<? super P>, D> {
 		if(e==null||e.prio==null || wurzel==null){
 			return false;
 		}
-		Node<P,D> n=e.node,nz,wz;
-		nz=n;
+		Node<P,D> nz,wz;
+		nz=e.node;
 		while(nz.parent!=null)
 			nz=nz.parent;
 		wz=wurzel;
-		while (wz.degree<nz.degree&& wz!=null){
+		while (wz!=null &&wz.degree<nz.degree ){
 			wz=wz.sibling;
 		}
 		if(wz==null || wz.degree>nz.degree)
@@ -76,7 +76,7 @@ class BinHeap <P extends Comparable<? super P>, D> {
 			return false;
 		}
 	}
-	/**
+	/*
 	 * Enthält die Halde den Eintrag e?
 	 * REWRITE!
 	 * geh vom node wo du giregst einfach soweit hoch wie möglich und kuck ob du bei der wurzel rauskommst!
@@ -244,7 +244,7 @@ class BinHeap <P extends Comparable<? super P>, D> {
 
 
 	/**
-	 * ToDo
+	 *
 	 * @param entry entry to be removed
 	 * @return removed entry
 	 */
@@ -304,7 +304,10 @@ class BinHeap <P extends Comparable<? super P>, D> {
 
 			n=n.sibling;
 		}
-		return new Node[]{min,ln};
+		Node<P,D>[] ret=new Node[2];
+		ret[0]=min;
+		ret[1]=ln;
+		return ret;
 	}
 
 	/**
@@ -418,7 +421,7 @@ class BinHeap <P extends Comparable<? super P>, D> {
 			a=-1;
 		//gleich
 		if (a == 0) {
-			return false;
+			return true;
 		}
 		entry.prio = s;
 
@@ -446,16 +449,14 @@ class BinHeap <P extends Comparable<? super P>, D> {
 
 		return false;
 	}
-	public void up (Entry<P, D> a) {
+	private void up (Entry<P, D> a) {
 		if (a.node.parent == null) {
 			return;
 		}
-		Entry<P, D> z = null;
 		Integer x = a.node.prio().compareTo(a.node.parent.prio());
 		if(a==mInf)
 			x=-1;
 		while (x < 0) {
-			if (a.node.parent != null) z = a.node.parent.entry;
 			swap(a,a.node.parent.entry);
 			 //a = z;
 
@@ -468,28 +469,20 @@ class BinHeap <P extends Comparable<? super P>, D> {
 				x=-1;
 		}
 	}
-	public void down (Entry<P, D> a) {
+	private void down (Entry<P, D> a) {
 		if (a.node.child == null) {
 			return;
 		}
-		Entry<P, D> z = null;
 		Integer x = a.node.prio().compareTo(a.node.child.prio());
 		while (x > 0) {
-			if (a.node.child != null) {
-				z = a.node.child.entry;
-			}
 			swap(a,a.node.child.entry);
-			 //a = z;
 			if (a == null || a.node.child == null) {
 				return;
 			}
-
-
-
 			x = a.node.prio().compareTo(a.node.child.prio());
 		}
 	}
-	public void swap(Entry<P, D> a,Entry<P, D> b) {
+	private void swap(Entry<P, D> a,Entry<P, D> b) {
 		/*
 		P temp = a.prio;
 		a.prio = b.prio;
@@ -500,7 +493,7 @@ class BinHeap <P extends Comparable<? super P>, D> {
 
 		 */
 
-		Node temp3 = a.node;
+		Node<P,D> temp3 = a.node;
 		Entry<P, D> temp4 = a.node.entry;
 		a.node.entry = b;
 		a.node = b.node;
@@ -520,59 +513,57 @@ class BinHeap <P extends Comparable<? super P>, D> {
     // Wenn der Eintrag momentan tatsächlich zu einer Halde gehört,
     // verweist node auf den zugehörigen Knoten eines Binomialbaums
     // dieser Halde.
-    public static class Entry <P, D> {
-	// Priorität, zusätzliche Daten und zugehöriger Knoten.
-	private P prio;
-	private D data;
-	private Node<P, D> node;
+	public static class Entry <P, D> {
+		// Priorität, zusätzliche Daten und zugehöriger Knoten.
+		private P prio;
+		private D data;
+		private Node<P, D> node;
 
-	// Eintrag mit Priorität p und zusätzlichen Daten d erzeugen.
-	private Entry (P p, D d) {
-	    prio = p;
-	    data = d;
+		// Eintrag mit Priorität p und zusätzlichen Daten d erzeugen.
+		private Entry (P p, D d) {
+			prio = p;
+			data = d;
+		}
+
+		// Priorität bzw. zusätzliche Daten liefern.
+		public P prio () { return prio; }
+		public D data () { return data; }
 	}
 
-	// Priorität bzw. zusätzliche Daten liefern.
-	public P prio () { return prio; }
-	public D data () { return data; }
-    }
+	// Knoten eines Binomialbaums innerhalb einer solchen Halde.
+	// Neben den eigentlichen Knotendaten (degree, parent, child,
+	// sibling), enthält der Knoten einen Verweis auf den zugehörigen
+	// Eintrag.
+	private static class Node <P, D> {
+		// Zugehöriger Eintrag.
+		private Entry<P, D> entry;
 
-    // Knoten eines Binomialbaums innerhalb einer solchen Halde.
-    // Neben den eigentlichen Knotendaten (degree, parent, child,
-    // sibling), enthält der Knoten einen Verweis auf den zugehörigen
-    // Eintrag.
-    private static class Node <P, D> {
+		// Grad des Knotens.
+		private int degree;
 
-	// Zugehöriger Eintrag.
-	private Entry<P, D> entry;
+		// Vorgänger (falls vorhanden; bei einem Wurzelknoten null).
+		private Node<P, D> parent;
 
-	// Grad des Knotens.
-	private int degree;
+		// Nachfolger mit dem größten Grad
+		// (falls vorhanden; bei einem Blattknoten null).
+		private Node<P, D> child;
 
-	// Vorgänger (falls vorhanden; bei einem Wurzelknoten null).
-	private Node<P, D> parent;
+		// Zirkuläre Verkettung aller Nachfolger eines Knotens
+		// bzw. einfache Verkettung aller Wurzelknoten einer Halde,
+		// jeweils sortiert nach aufsteigendem Grad.
+		private Node<P, D> sibling;
 
-	// Nachfolger mit dem größten Grad
+		// Knoten erzeugen, der auf den Eintrag e verweist
+		// und umgekehrt.
+		private Node (Entry<P, D> e) {
+			entry = e;
+			e.node = this;
+		}
 
-	// (falls vorhanden; bei einem Blattknoten null).
-	private Node<P, D> child;
-
-	// Zirkuläre Verkettung aller Nachfolger eines Knotens
-	// bzw. einfache Verkettung aller Wurzelknoten einer Halde,
-	// jeweils sortiert nach aufsteigendem Grad.
-	private Node<P, D> sibling;
-
-	// Knoten erzeugen, der auf den Eintrag e verweist
-	// und umgekehrt.
-	private Node (Entry<P, D> e) {
-	    entry = e;
-	    e.node = this;
+		// Priorität des Knotens, d. h. des zugehörigen Eintrags
+		// liefern.
+		private P prio () { return entry.prio; }
 	}
-
-	// Priorität des Knotens, d. h. des zugehörigen Eintrags
-	// liefern.
-	private P prio () { return entry.prio; }
-    }
 
 }
 
