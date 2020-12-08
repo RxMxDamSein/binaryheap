@@ -70,8 +70,12 @@ class BinHeap <P extends Comparable<? super P>, D> {
 		}
 		if(wz==null || wz.degree>nz.degree)
 			return false;
-		if(wz.hashCode()==nz.hashCode()&&wz.prio().compareTo(nz.prio())==0&& wz.entry.data().equals(nz.entry.data()))
-			return true;
+		if(wz.hashCode()==nz.hashCode()&&wz.prio().compareTo(nz.prio())==0){
+			if((wz.entry.data()==null && nz.entry.data()==null)||(wz.entry.data()!=null && nz.entry.data()!=null && wz.entry.data().equals(nz.entry.data())))
+				return true;
+			else
+				return false;
+		}
 		else {
 			return false;
 		}
